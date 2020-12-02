@@ -58,4 +58,4 @@ Given JSON data is InValid
 
 Process finished with exit code 0
 
-Пробелы из "event": "label_       selected" не удалял.
+# Пробелы из "event": "label_       selected" не удалял.
