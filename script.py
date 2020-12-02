@@ -11,24 +11,23 @@ def get_schema(schema_file):
             schema_file = json.load(file)
         return schema_file
     except FileNotFoundError:
-        print(f'{event}     No such schema file\n')
+        print(f'{schema_file}.schema: No such schema file\n')
 
 
 def validate_json(json_data, schema_name):
     """REF: https://json-schema.org/ """
     # Describe what kind of json you expect.
     execute_api_schema = get_schema(schema_name)
-    try:
-        validate(instance=json_data, schema=execute_api_schema)
-    except TypeError:
-        pass
-    except jsonschema.exceptions.ValidationError as err:
-        print(err)
-        err = "Given JSON data is InValid"
-        return False, err
+    if execute_api_schema:
+        try:
+            validate(instance=json_data, schema=execute_api_schema)
+        except jsonschema.exceptions.ValidationError as err:
+            print(err.message)
+            err = "Given JSON data is InValid\n"
+            return False, err
 
-    message = "Given JSON data is Valid"
-    return True, message
+        message = "Given JSON data is Valid\n"
+        return True, message
 
 
 def get_json(json_file):
@@ -44,8 +43,11 @@ def get_json(json_file):
 
 def validate_it(json_name):
     json_data = get_json(json_name)
-    is_valid, msg = validate_json(json_data[0], json_data[1])
-    print(f'{event}:    {msg}\n')
+    try:
+        is_valid, msg = validate_json(json_data[0], json_data[1])
+        print(msg)
+    except TypeError:
+        pass
 
 
 schemas = []
@@ -58,5 +60,7 @@ for _, _, i in os.walk('event'):
     for event in i:
         events.append(event)
 
+print()
 for event in events:
+    print(f'{event}:')
     validate_it(event)
