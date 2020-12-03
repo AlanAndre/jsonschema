@@ -9,6 +9,7 @@ def get_schema(schema_file):
     """This function loads the given schema available"""
     try:
         with open(f'schema/{schema_file}.schema', 'r') as file:
+            print(f'schema file:    {schema_file}.schema')
             schema_file = json.load(file)
         return schema_file
     except FileNotFoundError:
@@ -61,7 +62,7 @@ for _, _, i in os.walk('event'):
     for event in i:
         events.append(event)
 
-init()  # colorama 
+init()  # colorama
 print()
 for event in events:
     print(f'{Fore.RED + event}:', Fore.RESET)
