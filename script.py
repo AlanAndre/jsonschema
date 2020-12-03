@@ -2,6 +2,7 @@ import json
 import jsonschema
 from jsonschema import validate
 import os
+from colorama import init, Fore
 
 
 def get_schema(schema_file):
@@ -60,7 +61,9 @@ for _, _, i in os.walk('event'):
     for event in i:
         events.append(event)
 
+init()  # colorama 
 print()
 for event in events:
-    print(f'{event}:')
+    print(f'{Fore.RED + event}:', Fore.RESET)
+
     validate_it(event)
